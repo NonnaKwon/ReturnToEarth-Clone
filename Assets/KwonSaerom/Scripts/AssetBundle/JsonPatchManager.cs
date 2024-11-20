@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Purchasing.MiniJSON;
 using static UnityEngine.Rendering.DebugUI.Table;
 
 public class JsonPatchManager : Singleton<JsonPatchManager>
@@ -35,8 +37,7 @@ public class JsonPatchManager : Singleton<JsonPatchManager>
     [SerializeField] private TMP_Text loadingText;
     [SerializeField] private TMP_Text loadingSubText;
 
-
-
+    
     public void PatchJson()
     {
         if (isLoad == false)
@@ -48,9 +49,6 @@ public class JsonPatchManager : Singleton<JsonPatchManager>
         }
     }
 
-    /// <summary>
-    /// 에셋 번들 패치 프로세스
-    /// </summary>
     IEnumerator LoadJsonProgress()
     {
         patchScreen.gameObject.SetActive(true);
@@ -62,6 +60,7 @@ public class JsonPatchManager : Singleton<JsonPatchManager>
         yield return SerialLoadJson(); // 순차 방식 패치
 
         patchScreen.gameObject.SetActive(false);
+        Manager.Data.LoadAllTable();
     }
 
 
@@ -92,20 +91,30 @@ public class JsonPatchManager : Singleton<JsonPatchManager>
 
             // # 2. 로컬 버전 테이블 load
             loadingSubText.text = "로컬 버전 테이블을 조회합니다.";
+
+            bool isInit = false;
             StreamReader sr;
             try
             {
                 sr = new StreamReader(localVersionTablePath);
             }
-            catch(FileNotFoundException ex)
+            catch(IOException ex)
             {
+                if(Directory.Exists($"{path}/Json") == false)
+                {
+                    Directory.CreateDirectory($"{path}/Json");
+                }
+
                 byte[] data = v.downloadHandler.data;
                 FileStream fs = new FileStream(localVersionTablePath, FileMode.Create);
                 fs.Write(data, 0, data.Length);
                 fs.Dispose();
-                yield break;
+                isInit = true;
+                sr = new StreamReader(localVersionTablePath);
             }
 
+
+            // TODO 함수로 하나하나 빼서, 최초일때는 바로 패치 넘어가게.
             rows = sr.ReadToEnd().Split('\n');
             localVersionTable = new string[rows.Length, rows[0].Split(',').Length];
             for (int r = 0; r < localVersionTable.GetLength(0); r++)
@@ -125,7 +134,7 @@ public class JsonPatchManager : Singleton<JsonPatchManager>
             for (int r = 1; r < serverVersionTable.GetLength(0); r++)
             {
                 // 버전 비교. 패치가 필요한 번들 발견
-                if (string.Compare(serverVersionTable[r, (int)VersionTableColumn.version], localVersionTable[r, (int)VersionTableColumn.version]) != 0)
+                if (isInit || string.Compare(serverVersionTable[r, (int)VersionTableColumn.version], localVersionTable[r, (int)VersionTableColumn.version]) != 0)
                 {
                     string[] s = new string[3];
                     s[(int)VersionTableColumn.fileName] = serverVersionTable[r, (int)VersionTableColumn.fileName];
@@ -148,9 +157,6 @@ public class JsonPatchManager : Singleton<JsonPatchManager>
     }
 
 
-    /// <summary>
-    /// 서버 버전을 기반으로 캐시 혹은 웹서버에서 순차적으로 에셋 번들 로드
-    /// </summary>
     IEnumerator SerialLoadJson()
     {
         for (int row = 0; row < patchListInfo.Count; row++)
@@ -191,25 +197,4 @@ public class JsonPatchManager : Singleton<JsonPatchManager>
     }
 
 
-    /// Json 파일을 서버에 저장하는 코드
-    IEnumerator Upload(string URL, string jsonfile)
-    {
-        using (UnityWebRequest request = UnityWebRequest.Post(URL, jsonfile))
-        {
-            byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(jsonfile);
-            request.uploadHandler = new UploadHandlerRaw(jsonToSend);
-            request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-            request.SetRequestHeader("Content-Type", "application/json");
-
-            yield return request.SendWebRequest();
-            if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.Log(request.error);
-            }
-            else
-            {
-                Debug.Log(request.downloadHandler.text);
-            }
-        }
-    }
 }

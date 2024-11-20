@@ -1,3 +1,4 @@
+using GooglePlayGames.BasicApi;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,86 +8,9 @@ using Object = UnityEngine.Object;
 public class ResourceManager : Singleton<ResourceManager>
 {
     private Dictionary<string, Object> resources = new Dictionary<string, Object>();
-
-    #region addressable
-
-    //public List<AsyncOperationHandle> Handles = new List<AsyncOperationHandle>();
-    //// -----> 권새롬 추가 : 어드레서블
-    //public T Load<T>(string key) where T : Object
-    //{
-    //    if (resources.TryGetValue(key, out Object resource))
-    //    {
-    //        return resource as T;
-    //    }
-
-    //    //스프라이트 로드할때 항상 .sprite가 붙어 있어야하는데 데이터시트에 .sprite가 붙어있지 않은 데이터가 많음
-    //    if (typeof(T) == typeof(Sprite))
-    //    {
-    //        key = key + ".sprite";
-    //        if (resources.TryGetValue(key, out Object temp))
-    //        {
-    //            return temp as T;
-    //        }
-    //    }
-    //    return null;
-    //}
-
-    //public void LoadAsync<T>(string key, Action<T> callback = null) where T : UnityEngine.Object
-    //{
-    //    //스프라이트인 경우 하위객체의 찐이름으로 로드하면 스프라이트로 로딩이 됌
-    //    string loadKey = key;
-    //    if (key.Contains(".sprite"))
-    //        loadKey = $"{key}[{key.Replace(".sprite", "")}]";
-
-    //    var asyncOperation = Addressables.LoadAssetAsync<T>(loadKey);
-    //    asyncOperation.Completed += (op) =>
-    //    {
-    //        // 캐시 확인.
-    //        if (resources.TryGetValue(key, out Object resource))
-    //        {
-    //            callback?.Invoke(op.Result);
-    //            return;
-    //        }
-
-    //        resources.Add(key, op.Result);
-    //        callback?.Invoke(op.Result);
-    //    };
-    //    Handles.Add(asyncOperation);
-    //}
-
-    //// 챕터 정보를 label 로 넘겨줘서 필요한 프리팹들, 리소스들을 로드한다.
-    //public void LoadAllAsync<T>(string label, Action<string, int, int> callback) where T : UnityEngine.Object
-    //{
-    //    var opHandle = Addressables.LoadResourceLocationsAsync(label, typeof(T));
-    //    opHandle.Completed += (op) =>
-    //    {
-    //        int loadCount = 0;
-
-    //        int totalCount = op.Result.Count;
-
-    //        foreach (var result in op.Result)
-    //        {
-    //            if (result.PrimaryKey.Contains(".sprite"))
-    //            {
-    //                LoadAsync<Sprite>(result.PrimaryKey, (obj) =>
-    //                {
-    //                    loadCount++;
-    //                    callback?.Invoke(result.PrimaryKey, loadCount, totalCount);
-    //                });
-    //            }
-    //            else
-    //            {
-    //                LoadAsync<T>(result.PrimaryKey, (obj) =>
-    //                {
-    //                    loadCount++;
-    //                    callback?.Invoke(result.PrimaryKey, loadCount, totalCount);
-    //                });
-    //            }
-    //        }
-    //    };
-    //}
-    #endregion
-
+    public AssetBundle UIsBundle { set { uisBundle = value; } }
+    private AssetBundle uisBundle;
+    
     #region assetbundle
 
     // -----> 권새롬 추가 : 에셋번들
@@ -151,7 +75,7 @@ public class ResourceManager : Singleton<ResourceManager>
     public void Clear()
     {
         resources.Clear();
-        Init(AssetBundleManager.Instance.UIsBundle); //공통으로 쓰는 데이터묶음
+        Init(uisBundle); //공통으로 쓰는 데이터묶음
     }
     #endregion
 

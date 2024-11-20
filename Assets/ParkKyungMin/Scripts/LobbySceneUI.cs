@@ -47,7 +47,7 @@ public class LobbySceneUI : BaseUI
 
     private void Start()
     {
-        LocalUpdate();
+        //LocalUpdate();
         GetUI(GameObjects.TouchUI.ToString()).SetActive(false);
         GetUI(GameObjects.GameStartSceneUI.ToString()).SetActive(false);
         if (Manager.Game.LanguageSet == Define.LanguageSet.EN)

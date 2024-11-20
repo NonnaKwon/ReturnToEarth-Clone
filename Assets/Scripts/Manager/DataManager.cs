@@ -93,10 +93,6 @@ public class DataManager : Singleton<DataManager>
     private string path => Path.Combine(Application.persistentDataPath, $"Resources/Data");
 #endif
 
-    private void Start()
-    {
-        LoadAllTable();
-    }
     #region DataMethod
 
     public void LoadAllTable()
@@ -347,6 +343,8 @@ public class DataManager : Singleton<DataManager>
         if (Directory.Exists($"{path}/Json") == false)
         {
             Directory.CreateDirectory($"{path}/Json");
+            Debug.Log("sss");
+            Debug.Log(Directory.Exists($"{path}/Json"));
         }
 
         File.WriteAllText($"{path}/Json/{jsonFileName}.json", json);

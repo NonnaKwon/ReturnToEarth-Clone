@@ -999,7 +999,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1703181217}
   - component: {fileID: 1703181216}
-  - component: {fileID: 1703181218}
   m_Layer: 0
   m_Name: LobbyScene
   m_TagString: Untagged
@@ -1034,51 +1033,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1703181218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1703181215}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e84c1849a138dd418606cc8af0d1f35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jsons:
-  - fileName: ChapterTable
-    json: {fileID: 4900000, guid: 293831c6ef1172042bb549c6017de48e, type: 3}
-  - fileName: IDTable
-    json: {fileID: 4900000, guid: 0c559a9a6bc5b5c4aaf8e94a1e701439, type: 3}
-  - fileName: InteractionObjectTable
-    json: {fileID: 4900000, guid: 282dca5767b0d49408a9576adfd02262, type: 3}
-  - fileName: InventoryTable
-    json: {fileID: 4900000, guid: 0573324c17b52b7469da162ee47639b1, type: 3}
-  - fileName: ItemTable
-    json: {fileID: 4900000, guid: b861ea3367cce874e8c0fe562acf3b7f, type: 3}
-  - fileName: PuzzleTable
-    json: {fileID: 4900000, guid: dc22f817348af144b9a1415775d3c012, type: 3}
-  - fileName: ResourceTable
-    json: {fileID: 4900000, guid: ce12bdabc1f029e4b903ad718ade11e6, type: 3}
-  - fileName: StageProcessTable
-    json: {fileID: 4900000, guid: 98ce188a845adc04196824a92ff59bfb, type: 3}
-  - fileName: StageTable
-    json: {fileID: 4900000, guid: 7c1c75ef0646bd24b8227dd011d75699, type: 3}
-  - fileName: TextBundleTable
-    json: {fileID: 4900000, guid: 984056585f200c846a1a55e36fa6821f, type: 3}
-  - fileName: TextTable
-    json: {fileID: 4900000, guid: e83f9f854dcb30542acf20b539245575, type: 3}
-  - fileName: UITable
-    json: {fileID: 4900000, guid: 239e8c79e8502e2439f0bce2485468d0, type: 3}
-  - fileName: UserInfoTable
-    json: {fileID: 4900000, guid: 0c852f24b66b66c4f9a160736c4ec6b5, type: 3}
-  - fileName: UserItemTable
-    json: {fileID: 4900000, guid: 367c4d22aba27864dbe28bb80a8d8034, type: 3}
-  - fileName: UserLogTable
-    json: {fileID: 4900000, guid: 7be38e49a1590d744a14f41e5fecf8d0, type: 3}
-  - fileName: JsonVersionTable
-    json: {fileID: 4900000, guid: 4d6f9631f2b7d4f4d99a118c1dcf1505, type: 3}
 --- !u!1 &1717569367
 GameObject:
   m_ObjectHideFlags: 0
@@ -8868,7 +8822,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 43.05
+  m_fontSize: 41.6
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1

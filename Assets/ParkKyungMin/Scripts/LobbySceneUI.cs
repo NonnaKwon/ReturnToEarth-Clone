@@ -88,7 +88,7 @@ public class LobbySceneUI : BaseUI
     {
         if (Backend.BMember.GetGuestID() == null || Backend.BMember.GetGuestID() == "")
         {
-            Debug.Log("게스트로그인이 완료되지 않았습니다."); return;
+            return;
         }
         else
         {
